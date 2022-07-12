@@ -16,6 +16,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import model.Student;
 import util.CrudUtil;
 import view.tm.StudentTM;
@@ -34,6 +36,7 @@ public class StudentFormController {
     public JFXTextField txtStudentNic;
     public JFXButton btnAddStudent;
     public TableView<Student>tblStudent;
+    public JFXTextField txtSearch;
 
     public void initialize() throws SQLException, ClassNotFoundException {
         tblStudent.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -135,4 +138,16 @@ public class StudentFormController {
         }else{
             new Alert(Alert.AlertType.WARNING,"Try Again!").show();
         }    }
+
+    public void searchIsOnAction(KeyEvent keyEvent) throws SQLException, ClassNotFoundException {
+        String search = "%" + txtSearch.getText() + "%";
+
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            ArrayList<Student> searchStudent = StudentCrudController.getSearchStudent(search);
+
+            tblStudent.getItems().clear();
+            tblStudent.getItems().addAll(searchStudent);
+            tblStudent.refresh();
+        }
+    }
 }

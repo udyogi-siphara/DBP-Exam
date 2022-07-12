@@ -102,5 +102,6 @@
             </ContextMenu>
          </contextMenu>
       </TableView>
+      <JFXTextField fx:id="txtSearch" layoutX="500.0" layoutY="34.0" onKeyReleased="#searchIsOnAction" prefHeight="25.0" prefWidth="241.0" promptText="Search Id " />
    </children>
 </AnchorPane>

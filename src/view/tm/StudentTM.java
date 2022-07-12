@@ -7,6 +7,6 @@
 
 package view.tm;
 
-public class CartTM {
+public class StudentTM {
 
 }

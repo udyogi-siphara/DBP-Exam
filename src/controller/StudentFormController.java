@@ -71,19 +71,35 @@ public class StudentFormController {
     }
 
     public void btnAddStudentOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        Student stu = new Student(
-                txtStudentId.getText(),txtStudentName.getText(), txtStudentEmail.getText(),txtStudentContact.getText(),txtStudentAddress.getText(),txtStudentNic.getText()
-        );
+        if (btnAddStudent.getText().equals("Add Student")) {
+            Student stu = new Student(
+                    txtStudentId.getText(), txtStudentName.getText(), txtStudentEmail.getText(), txtStudentContact.getText(), txtStudentAddress.getText(), txtStudentNic.getText()
+            );
 
-        try {
-            if (CrudUtil.execute("INSERT INTO Student VALUES (?,?,?,?,?,?)",stu.getId(),stu.getName(),stu.getEmail(),stu.getTelNum(),stu.getAddress(),stu.getNic())){
-                new Alert(Alert.AlertType.CONFIRMATION, "Saved!..").show();
+            try {
+                if (CrudUtil.execute("INSERT INTO Student VALUES (?,?,?,?,?,?)", stu.getId(), stu.getName(), stu.getEmail(), stu.getTelNum(), stu.getAddress(), stu.getNic())) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Saved!..").show();
+                    loadAllStudents();
+                    clearText();
+                }
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            }
+        }else{
+            Student student = new Student(txtStudentId.getText(),txtStudentName.getText(),txtStudentEmail.getText(),txtStudentContact.getText(),txtStudentAddress.getText(),txtStudentNic.getText());
+
+            boolean isUpdated = CrudUtil.execute("UPDATE Student SET student_name = ?, email = ?, contact = ? , address = ? , nic = ?  WHERE student_id = ? ",student.getName(),student.getEmail(),student.getTelNum(),student.getAddress(),student.getNic(),student.getId());
+
+            if (isUpdated){
+                new Alert(Alert.AlertType.CONFIRMATION,"Updated !...").show();
+                btnAddStudent.setText("Add Student");
+                txtStudentId.setEditable(true);
                 loadAllStudents();
                 clearText();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Something Wrong").show();
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
     }
@@ -98,7 +114,16 @@ public class StudentFormController {
     }
 
     public void menuUpdateOnAction(ActionEvent actionEvent) {
+        Student selectedItem = tblStudent.getSelectionModel().getSelectedItem();
 
+        txtStudentId.setText(selectedItem.getId());
+        txtStudentName.setText(selectedItem.getName());
+        txtStudentEmail.setText(selectedItem.getEmail());
+        txtStudentContact.setText(selectedItem.getTelNum());
+        txtStudentAddress.setText(selectedItem.getAddress());
+        txtStudentNic.setText(selectedItem.getNic());
+
+        btnAddStudent.setText("Update");
     }
 
     public void menuDeleteOnAction(ActionEvent actionEvent) {

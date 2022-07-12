@@ -56,7 +56,7 @@ public class StudentCrudController {
     }
 
     public static ArrayList<Student> getSearchStudent(String enteredText) throws SQLException, ClassNotFoundException {
-        ResultSet result = CrudUtil.execute("SELECT * FROM student where studentId LIKE ? OR studentName LIKE ? OR email LIKE ? OR contact LIKE ? OR address LIKE ? OR nic LIKE ?", enteredText, enteredText, enteredText, enteredText,enteredText,enteredText);
+        ResultSet result = CrudUtil.execute("SELECT * FROM student where student_id LIKE ? OR student_name LIKE ? OR email LIKE ? OR contact LIKE ? OR address LIKE ? OR nic LIKE ?", enteredText, enteredText, enteredText, enteredText,enteredText,enteredText);
         ArrayList<Student> list = new ArrayList<>();
 
         while (result.next()) {
